@@ -48,7 +48,7 @@ class CuentasController {
         delete cuenta.clave;
 
         return res.status(200).json(
-          utils.successResponse("Cuenta creada correctamente.", {
+          utils.successResponse("Cuenta creada correctamente. Ya puedes iniciar sesión.", {
             idCuenta: cuenta.id,
           })
         );
