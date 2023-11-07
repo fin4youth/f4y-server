@@ -48,9 +48,12 @@ class CuentasController {
         delete cuenta.clave;
 
         return res.status(200).json(
-          utils.successResponse("Cuenta creada correctamente. Ya puedes iniciar sesión.", {
-            idCuenta: cuenta.id,
-          })
+          utils.successResponse(
+            "Cuenta creada correctamente. Ya puedes iniciar sesión.",
+            {
+              idCuenta: cuenta.id,
+            }
+          )
         );
       } else {
         return res
@@ -160,5 +163,77 @@ class CuentasController {
         );
     }
   }
+
+  /**
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   **/
+  async obtenerNombre(req, res) {
+    try {
+      const token = req.headers.authorization;
+
+      const { idCuenta } = jwtService.verificarToken(token);
+
+      const cuenta = await cuentasService.buscarPorId(idCuenta);
+
+      if (cuenta) {
+        return res.status(200).json(
+          utils.successResponse("Nombre obtenido correctamente.", {
+            cuenta: {
+              primerNombre: cuenta.primerNombre,
+              segundoNombre: cuenta.segundoNombre,
+              primerApellido: cuenta.primerApellido,
+              segundoApellido: cuenta.segundoApellido,
+            },
+          })
+        );
+      } else {
+        return res
+          .status(200)
+          .json(
+            utils.errorResponse(
+              "El id no corresponde a ninguna cuenta existente.",
+              null
+            )
+          );
+      }
+    } catch (error) {
+      return res
+        .status(500)
+        .json(
+          utils.errorResponse(
+            "Ha ocurrido un error al intentar obtener el nombre.",
+            null
+          )
+        );
+    }
+  }
+
+  /**
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   **/
+  async verificarSesion(req, res) {
+    try {
+      const token = req.headers.authorization;
+
+      jwtService.verificarToken(token);
+      return res.status(200).json(
+        utils.successResponse("La autenticación de sesión es válida.", {
+          sesionValida: true,
+        })
+      );
+    } catch (error) {
+      return res
+        .status(500)
+        .json(
+          utils.errorResponse(
+            "La sesión no es válida y/o ha ocurrido un error al validarla.",
+            { sesionValida: false }
+          )
+        );
+    }
+  }
 }
+
 module.exports = CuentasController;

@@ -23,8 +23,12 @@ module.exports = {
       correo,
       clave,
     });
-
     return cuentaCreada;
+  },
+
+  async buscarPorId(id) {
+    const cuentaEncontrada = await Cuenta.findByPk(id);
+    return cuentaEncontrada;
   },
 
   async buscarPorIdentificacion(tipoIdentificacion, numeroIdentificacion) {
@@ -34,7 +38,6 @@ module.exports = {
         numeroIdentificacion,
       },
     });
-
     return cuentaEncontrada;
   },
 
@@ -42,7 +45,6 @@ module.exports = {
     const cuentaEncontrada = await Cuenta.findOne({
       where: { correo },
     });
-
     return cuentaEncontrada;
   },
 };

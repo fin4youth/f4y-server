@@ -47,10 +47,22 @@ cuentasRouter.post(
   _cuentasController.iniciarsesion
 );
 
-cuentasRouter.post(
+cuentasRouter.get(
   "/cerrar-sesion",
   authMiddleware,
   _cuentasController.cerrarSesion
+);
+
+cuentasRouter.get(
+  "/obtener-nombre",
+  authMiddleware,
+  _cuentasController.obtenerNombre
+);
+
+cuentasRouter.get(
+  "/verificar-sesion",
+  authMiddleware,
+  _cuentasController.verificarSesion
 );
 
 module.exports = cuentasRouter;
