@@ -47,4 +47,44 @@ module.exports = {
     });
     return cuentaEncontrada;
   },
+
+  async actualizarIdentificacion(id, tipoIdentificacion, numeroIdentificacion) {
+    const [affectedCount] = await Cuenta.update(
+      { tipoIdentificacion, numeroIdentificacion },
+      { where: { id } }
+    );
+    return affectedCount > 0;
+  },
+
+  async actualizarNombre(
+    id,
+    primerNombre,
+    segundoNombre,
+    primerApellido,
+    segundoApellido
+  ) {
+    const [affectedCount] = await Cuenta.update(
+      { primerNombre, segundoNombre, primerApellido, segundoApellido },
+      { where: { id } }
+    );
+    return affectedCount > 0;
+  },
+
+  async actualizarFechaNacimiento(id, fechaNacimiento) {
+    const [affectedCount] = await Cuenta.update(
+      { fechaNacimiento },
+      { where: { id } }
+    );
+    return affectedCount > 0;
+  },
+
+  async actualizarCorreo(id, correo) {
+    const [affectedCount] = await Cuenta.update({ correo }, { where: { id } });
+    return affectedCount > 0;
+  },
+
+  async actualizarClave(id, clave) {
+    const [affectedCount] = await Cuenta.update({ clave }, { where: { id } });
+    return affectedCount > 0;
+  },
 };

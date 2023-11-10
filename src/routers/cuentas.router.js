@@ -22,47 +22,109 @@ const SEGUNDO_APELLIDO = utils.createParam("segundoApellido", "string", true);
 const FECHA_NACIMIENTO = utils.createParam("fechaNacimiento", "string", false);
 const CORREO = utils.createParam("correo", "string", false);
 const CLAVE = utils.createParam("clave", "string", false);
+const CLAVE_ACTUAL = utils.createParam("claveActual", "string", false);
 
 const _cuentasController = new cuentasController();
 
 cuentasRouter.post(
   "/crear",
-  validatorMiddleware([
-    TIPO_IDENTIFICACION,
-    NUMERO_IDENTIFICACION,
-    PRIMER_NOMBRE,
-    SEGUNDO_NOMBRE,
-    PRIMER_APELLIDO,
-    SEGUNDO_APELLIDO,
-    FECHA_NACIMIENTO,
-    CORREO,
-    CLAVE,
-  ]),
+  [
+    validatorMiddleware([
+      TIPO_IDENTIFICACION,
+      NUMERO_IDENTIFICACION,
+      PRIMER_NOMBRE,
+      SEGUNDO_NOMBRE,
+      PRIMER_APELLIDO,
+      SEGUNDO_APELLIDO,
+      FECHA_NACIMIENTO,
+      CORREO,
+      CLAVE,
+    ]),
+  ],
   _cuentasController.crear
 );
 
 cuentasRouter.post(
   "/iniciar-sesion",
-  validatorMiddleware([TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION, CLAVE]),
+  [validatorMiddleware([TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION, CLAVE])],
   _cuentasController.iniciarsesion
 );
 
 cuentasRouter.get(
   "/cerrar-sesion",
-  authMiddleware,
+  [authMiddleware],
   _cuentasController.cerrarSesion
 );
 
 cuentasRouter.get(
+  "/verificar-sesion",
+  [authMiddleware],
+  _cuentasController.verificarSesion
+);
+
+cuentasRouter.get(
+  "/obtener-identificacion",
+  [authMiddleware],
+  _cuentasController.obtenerIdentificacion
+);
+
+cuentasRouter.get(
   "/obtener-nombre",
-  authMiddleware,
+  [authMiddleware],
   _cuentasController.obtenerNombre
 );
 
 cuentasRouter.get(
-  "/verificar-sesion",
-  authMiddleware,
-  _cuentasController.verificarSesion
+  "/obtener-fecha-nacimiento",
+  [authMiddleware],
+  _cuentasController.obtenerFechaNacimiento
+);
+
+cuentasRouter.get(
+  "/obtener-correo",
+  [authMiddleware],
+  _cuentasController.obtenerCorreo
+);
+
+cuentasRouter.put(
+  "/actualizar-identificacion",
+  [
+    authMiddleware,
+    validatorMiddleware([TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION]),
+  ],
+  _cuentasController.actualizarIdentificacion
+);
+
+cuentasRouter.put(
+  "/actualizar-nombre",
+  [
+    authMiddleware,
+    validatorMiddleware([
+      PRIMER_NOMBRE,
+      SEGUNDO_NOMBRE,
+      PRIMER_APELLIDO,
+      SEGUNDO_APELLIDO,
+    ]),
+  ],
+  _cuentasController.actualizarNombre
+);
+
+cuentasRouter.put(
+  "/actualizar-fecha-nacimiento",
+  [authMiddleware, validatorMiddleware([FECHA_NACIMIENTO])],
+  _cuentasController.actualizarFechaNacimiento
+);
+
+cuentasRouter.put(
+  "/actualizar-correo",
+  [authMiddleware, validatorMiddleware([CORREO])],
+  _cuentasController.actualizarCorreo
+);
+
+cuentasRouter.put(
+  "/actualizar-clave",
+  [authMiddleware, validatorMiddleware([CLAVE_ACTUAL, CLAVE])],
+  _cuentasController.actualizarClave
 );
 
 module.exports = cuentasRouter;

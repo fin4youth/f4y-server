@@ -57,7 +57,7 @@ const Cuenta = sequelize.define(
     },
     clave: {
       type: DataTypes.STRING(76),
-      allowNull: true,
+      allowNull: false,
       field: "clave",
     },
     saldo: {
