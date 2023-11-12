@@ -87,4 +87,14 @@ module.exports = {
     const [affectedCount] = await Cuenta.update({ clave }, { where: { id } });
     return affectedCount > 0;
   },
+
+  async sumarSaldo(id, monto) {
+    const cuenta = await this.buscarPorId(id);
+    cuenta.increment("saldo", { by: monto });
+  },
+
+  async restarSaldo(id, monto) {
+    const cuenta = await this.buscarPorId(id);
+    cuenta.decrement("saldo", { by: monto });
+  },
 };

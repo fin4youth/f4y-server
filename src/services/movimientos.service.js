@@ -1,5 +1,7 @@
 const { QueryTypes } = require("sequelize");
 const sequelize = require("../../db");
+const Movimiento = require("../models/Movimiento");
+const TransferenciaExterna = require("../models/TransferenciaExterna");
 
 module.exports = {
   async obtenerUltimos(idCuenta) {
@@ -93,5 +95,23 @@ module.exports = {
       };
     });
     return movimientos;
+  },
+
+  async crearMovimiento(cuenta, monto) {
+    const movimiento = Movimiento.create({
+      cuenta,
+      monto,
+    });
+    return movimiento;
+  },
+
+  async crearTransferenciaExterna(movimiento, entidad, cuenta, carga) {
+    const transferenciaExterna = TransferenciaExterna.create({
+      movimiento,
+      entidad,
+      cuenta,
+      carga,
+    });
+    return transferenciaExterna;
   },
 };

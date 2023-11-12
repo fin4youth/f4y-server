@@ -6,12 +6,23 @@ const utils = require("../../utils");
 
 const movimientosRouter = express.Router();
 
+const ENTIDAD_ORIGEN = utils.createParam("entidadOrigen", "string", false);
+const CUENTA_ORIGEN = utils.createParam("cuentaOrigen", "string", false);
+const CUENTA_DESTINO = utils.createParam("cuentaDestino", "string", false);
+const MONTO = utils.createParam("monto", "number", false);
+
 const _movimientosController = new MovimientosController();
 
 movimientosRouter.get(
   "/obtener-ultimos",
   [authMiddleware],
   _movimientosController.obtenerUltimos
+);
+
+movimientosRouter.post(
+  "/cargar-cuenta",
+  [validatorMiddleware([ENTIDAD_ORIGEN, CUENTA_ORIGEN, CUENTA_DESTINO, MONTO])],
+  _movimientosController.cargarCuenta
 );
 
 module.exports = movimientosRouter;
