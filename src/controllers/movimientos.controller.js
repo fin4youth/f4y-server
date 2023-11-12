@@ -129,7 +129,7 @@ class MovimientosController {
           .json(
             utils.errorResponse(
               "La autorización para realizar la transacción es inválida.",
-              null
+              { secret, secret2: process.env.SECRETQUYNE }
             )
           );
       }
