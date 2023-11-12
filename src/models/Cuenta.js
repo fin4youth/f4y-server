@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../../db');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../../db");
 
 const Cuenta = sequelize.define(
   "Cuenta",
@@ -65,12 +65,6 @@ const Cuenta = sequelize.define(
       allowNull: false,
       defaultValue: 0,
       field: "saldo",
-    },
-    saldoOculto: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      field: "saldo_oculto",
     },
     bloqueada: {
       type: DataTypes.BOOLEAN,

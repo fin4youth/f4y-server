@@ -1,9 +1,10 @@
 const express = require("express");
-const cuentasRouter = express.Router();
 const cuentasController = require("../controllers/cuentas.controller");
 const validatorMiddleware = require("../middlewares/validator.middleware");
 const authMiddleware = require("../middlewares/auth.middleware");
 const utils = require("../../utils");
+
+const cuentasRouter = express.Router();
 
 const TIPO_IDENTIFICACION = utils.createParam(
   "tipoIdentificacion",
@@ -125,6 +126,12 @@ cuentasRouter.put(
   "/actualizar-clave",
   [authMiddleware, validatorMiddleware([CLAVE_ACTUAL, CLAVE])],
   _cuentasController.actualizarClave
+);
+
+cuentasRouter.get(
+  "/obtener-saldo",
+  [authMiddleware],
+  _cuentasController.obtenerSaldo
 );
 
 module.exports = cuentasRouter;

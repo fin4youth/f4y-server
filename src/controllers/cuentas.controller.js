@@ -240,7 +240,6 @@ class CuentasController {
   async obtenerNombre(req, res) {
     try {
       const token = req.headers.authorization;
-
       const { idCuenta } = jwtService.verificarToken(token);
 
       const cuenta = await cuentasService.buscarPorId(idCuenta);
@@ -639,6 +638,46 @@ class CuentasController {
         .json(
           utils.errorResponse(
             "Ha ocurrido un error al intentar actualizar la contraseña.",
+            null
+          )
+        );
+    }
+  }
+
+  /**
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   **/
+  async obtenerSaldo(req, res) {
+    try {
+      const token = req.headers.authorization;
+
+      const { idCuenta } = jwtService.verificarToken(token);
+
+      const cuenta = await cuentasService.buscarPorId(idCuenta);
+
+      if (cuenta) {
+        return res.status(200).json(
+          utils.successResponse("Saldo obtenido correctamente.", {
+            saldo: parseFloat(cuenta.saldo),
+          })
+        );
+      } else {
+        return res
+          .status(200)
+          .json(
+            utils.errorResponse(
+              "El id no corresponde a ninguna cuenta existente.",
+              null
+            )
+          );
+      }
+    } catch (error) {
+      return res
+        .status(500)
+        .json(
+          utils.errorResponse(
+            "Ha ocurrido un error al intentar obtener el saldo.",
             null
           )
         );
