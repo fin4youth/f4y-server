@@ -1,9 +1,9 @@
 require("dotenv").config();
 const axios = require("axios");
 const utils = require("../../utils");
-const movimientosService = require("../services/movimientos.service");
-const cuentasService = require("../services/cuentas.service");
 const jwtService = require("../services/jwt.service");
+const cuentasService = require("../services/cuentas.service");
+const movimientosService = require("../services/movimientos.service");
 
 class MovimientosController {
   constructor() {}
@@ -20,7 +20,6 @@ class MovimientosController {
 
       if (cuenta) {
         const movimientos = await movimientosService.obtenerUltimos(idCuenta);
-
         return res
           .status(200)
           .json(
@@ -34,13 +33,12 @@ class MovimientosController {
           .status(200)
           .json(
             utils.errorResponse(
-              "El id no corresponde a ninguna cuenta existente.",
+              "La identificación no corresponde a ninguna cuenta existente.",
               null
             )
           );
       }
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
         .json(

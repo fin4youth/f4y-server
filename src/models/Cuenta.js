@@ -64,6 +64,9 @@ const Cuenta = sequelize.define(
       type: DataTypes.DECIMAL(16, 2),
       allowNull: false,
       defaultValue: 0,
+      validate: {
+        min: 0,
+      },
       field: "saldo",
     },
     bloqueada: {
