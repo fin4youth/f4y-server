@@ -3,6 +3,7 @@ const sequelize = require("../../db");
 const Movimiento = require("../models/Movimiento");
 const TransferenciaExterna = require("../models/TransferenciaExterna");
 const TransferenciaBolsillo = require("../models/TransferenciaBolsillo");
+const TransferenciaCDT = require("../models/TransferenciaCDT");
 
 module.exports = {
   async obtenerUltimos(idCuenta) {
@@ -123,5 +124,14 @@ module.exports = {
       carga,
     });
     return transferenciaExterna;
+  },
+
+  async crearTransferenciaCDT(movimiento, cdt, tipo) {
+    const transferenciaCDT = TransferenciaCDT.create({
+      movimiento,
+      cdt,
+      tipo,
+    });
+    return transferenciaCDT;
   },
 };

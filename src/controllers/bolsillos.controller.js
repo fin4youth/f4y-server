@@ -48,7 +48,6 @@ class BolsillosController {
           );
       }
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
         .json(
@@ -150,7 +149,6 @@ class BolsillosController {
           );
       }
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
         .json(
@@ -321,7 +319,7 @@ class BolsillosController {
                     id: movimiento.id,
                     tipo: "carga-bolsillo",
                     fecha: movimiento.fecha,
-                    monto: parseFloat(movimiento.monto),
+                    monto: parseFloat(),
                   },
                 })
               );
