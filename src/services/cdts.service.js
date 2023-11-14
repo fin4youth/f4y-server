@@ -14,11 +14,37 @@ module.exports = {
     const montoDevolucion = parseFloat(
       (montoGanancia - montoRetencion).toFixed(2)
     );
+
+    let estado = "";
+
+    if (cdt.liquidado) {
+      estado = "liquidado";
+    } else if (cdt.cancelado) {
+      estado = "cancelado";
+    } else {
+      const fechaServidor = new Date();
+      const fechaInicioCDT = new Date(cdt.fechaInicio);
+      const fechaFinCDT = new Date(cdt.fechaFin);
+      const diferencia = fechaServidor - fechaInicioCDT;
+      const cincoDias = 5 * 24 * 60 * 60 * 1000;
+
+      if (diferencia <= cincoDias) {
+        estado = "apertura";
+      } else {
+        estado = "en-curso";
+
+        if (fechaServidor > fechaFinCDT) {
+          estado = "finalizado";
+        }
+      }
+    }
+
     const calculos = {
       montoIntereses,
       montoGanancia,
       montoRetencion,
       montoDevolucion,
+      estado,
     };
     return calculos;
   },

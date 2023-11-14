@@ -255,11 +255,10 @@ class CDTsController {
           cdt.interes = parseFloat(cdt.interes);
           cdt.retencion = parseFloat(cdt.retencion);
           const calculos = cdtsService.calcularExistente(cdt);
-          if (!(cdt.liquidado || cdt.cancelado)) {
-            const fechaServidor = new Date();
-            const fechaFinCDT = new Date(cdt.fechaFin);
-
-            if (fechaServidor > fechaFinCDT) {
+          if (
+            !(calculos.estado == "liquidado" || calculos.estado == "cancelado")
+          ) {
+            if (calculos.estado == "finalizado") {
               const cdtLiquidado = await cdtsService.liquidar(id, cuenta.id);
 
               if (cdtLiquidado) {
@@ -363,14 +362,11 @@ class CDTsController {
           cdt.inversion = parseFloat(cdt.inversion);
           cdt.interes = parseFloat(cdt.interes);
           cdt.retencion = parseFloat(cdt.retencion);
-          //const calculos = cdtsService.calcularExistente(cdt);
-          if (!(cdt.liquidado || cdt.cancelado)) {
-            const fechaServidor = new Date();
-            const fechaInicioCDT = new Date(cdt.fechaInicio);
-            const diferencia = fechaServidor - fechaInicioCDT;
-            const cincoDias = 5 * 24 * 60 * 60 * 1000;
-            console.log(diferencia, cincoDias);
-            if (diferencia <= cincoDias) {
+          const calculos = cdtsService.calcularExistente(cdt);
+          if (
+            !(calculos.estado == "liquidado" || calculos.estado == "cancelado")
+          ) {
+            if (calculos.estado == "apertura") {
               const cdtLiquidado = await cdtsService.liquidar(id, cuenta.id);
 
               if (cdtLiquidado) {
