@@ -387,39 +387,58 @@ class BolsillosController {
       if (cuenta) {
         const { id, monto } = req.body;
 
-        if (cuenta.saldo >= monto) {
-          const movimiento = await movimientosService.crearMovimiento(
-            cuenta.id,
-            monto
-          );
+        const bolsillo = await bolsillosService.buscarPorId(id);
 
-          if (movimiento) {
-            const transferenciaExterna =
-              await movimientosService.crearTransferenciaBolsillo(
-                movimiento.id,
-                id,
-                false
-              );
+        if (bolsillo) {
+          if (bolsillo.saldo >= monto) {
+            const movimiento = await movimientosService.crearMovimiento(
+              cuenta.id,
+              monto
+            );
 
-            if (transferenciaExterna) {
-              await bolsillosService.restarSaldo(id, monto);
-              await cuentasService.sumarSaldo(cuenta.id, monto);
+            if (movimiento) {
+              const transferenciaExterna =
+                await movimientosService.crearTransferenciaBolsillo(
+                  movimiento.id,
+                  id,
+                  false
+                );
 
-              return res.status(200).json(
-                utils.successResponse("Transacción realizada correctamente.", {
-                  movimiento: {
-                    id: movimiento.id,
-                    tipo: "descarga-bolsillo",
-                    fecha: movimiento.fecha,
-                    monto: movimiento.monto,
-                  },
-                })
-              );
+              if (transferenciaExterna) {
+                await bolsillosService.restarSaldo(id, monto);
+                await cuentasService.sumarSaldo(cuenta.id, monto);
+
+                return res.status(200).json(
+                  utils.successResponse(
+                    "Transacción realizada correctamente.",
+                    {
+                      movimiento: {
+                        id: movimiento.id,
+                        tipo: "descarga-bolsillo",
+                        fecha: movimiento.fecha,
+                        monto: movimiento.monto,
+                      },
+                    }
+                  )
+                );
+              } else {
+                return res
+                  .status(200)
+                  .json(
+                    utils.errorResponse(
+                      "No se pudo crear la transacción.",
+                      null
+                    )
+                  );
+              }
             } else {
               return res
                 .status(200)
                 .json(
-                  utils.errorResponse("No se pudo crear la transacción.", null)
+                  utils.errorResponse(
+                    "No se pudo crear el movimiento para la transacción.",
+                    null
+                  )
                 );
             }
           } else {
@@ -427,7 +446,7 @@ class BolsillosController {
               .status(200)
               .json(
                 utils.errorResponse(
-                  "No se pudo crear el movimiento para la transacción.",
+                  "No hay saldo disponible para realizar la transacción.",
                   null
                 )
               );
@@ -437,7 +456,7 @@ class BolsillosController {
             .status(200)
             .json(
               utils.errorResponse(
-                "No hay saldo disponible para realizar la transacción.",
+                "El id no corresponden con ningún bolsillo existente.",
                 null
               )
             );
