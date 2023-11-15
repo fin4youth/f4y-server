@@ -4,7 +4,7 @@ const validatorMiddleware = require("../middlewares/validator.middleware");
 const authMiddleware = require("../middlewares/auth.middleware");
 const utils = require("../../utils");
 
-const cdtsController = express.Router();
+const cdtsRouter = express.Router();
 
 const INVERSION = utils.createParam("inversion", "number", false);
 const DURACION = utils.createParam("duracion", "number", false);
@@ -13,37 +13,37 @@ const ID = utils.createParam("id", "number", false);
 
 const _cdtsController = new CDTsController();
 
-cdtsController.post(
+cdtsRouter.post(
   "/calcular",
   [authMiddleware, validatorMiddleware([INVERSION, DURACION, FECHA_INICIO])],
   _cdtsController.calcular
 );
 
-cdtsController.get(
+cdtsRouter.get(
   "/obtener-todos",
   [authMiddleware],
   _cdtsController.obtenerTodos
 );
 
-cdtsController.post(
+cdtsRouter.post(
   "/obtener",
   [authMiddleware, validatorMiddleware([ID])],
   _cdtsController.obtener
 );
 
-cdtsController.post(
+cdtsRouter.post(
   "/crear",
   [authMiddleware, validatorMiddleware([INVERSION, DURACION, FECHA_INICIO])],
   _cdtsController.crear
 );
 
-cdtsController.post(
+cdtsRouter.post(
   "/liquidar",
   [authMiddleware, validatorMiddleware([ID])],
   _cdtsController.liquidar
 );
 
-cdtsController.post(
+cdtsRouter.post(
   "/cancelar",
   [authMiddleware, validatorMiddleware([ID])],
   _cdtsController.cancelar
