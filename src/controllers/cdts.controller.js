@@ -1,5 +1,4 @@
 require("dotenv").config();
-const axios = require("axios");
 const utils = require("../../utils");
 const jwtService = require("../services/jwt.service");
 const cuentasService = require("../services/cuentas.service");
@@ -204,7 +203,7 @@ class CDTsController {
                 id: movimiento.id,
                 tipo: "inversion-cdt",
                 fecha: movimiento.fecha,
-                monto: movimiento.monto,
+                monto: parseFloat(movimiento.monto),
               },
             })
           );
@@ -284,7 +283,7 @@ class CDTsController {
                       id: movimiento.id,
                       tipo: "liquidacion-cdt",
                       fecha: movimiento.fecha,
-                      monto: movimiento.monto,
+                      monto: parseFloat(movimiento.monto),
                     },
                   })
                 );
@@ -331,7 +330,6 @@ class CDTsController {
           );
       }
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
         .json(
@@ -367,9 +365,9 @@ class CDTsController {
             !(calculos.estado == "liquidado" || calculos.estado == "cancelado")
           ) {
             if (calculos.estado == "apertura") {
-              const cdtLiquidado = await cdtsService.liquidar(id, cuenta.id);
+              const cdtCancelado = await cdtsService.cancelar(id, cuenta.id);
 
-              if (cdtLiquidado) {
+              if (cdtCancelado) {
                 const movimiento = await movimientosService.crearMovimiento(
                   cuenta.id,
                   cdt.inversion
@@ -389,7 +387,7 @@ class CDTsController {
                       id: movimiento.id,
                       tipo: "cancelacion-cdt",
                       fecha: movimiento.fecha,
-                      monto: movimiento.monto,
+                      monto: parseFloat(movimiento.monto),
                     },
                   })
                 );
@@ -436,7 +434,6 @@ class CDTsController {
           );
       }
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
         .json(

@@ -2,14 +2,14 @@ const CDT = require("../models/CDT");
 
 module.exports = {
   calcularExistente(cdt) {
-    const montoIntereses = parseFloat(
+    const montoInteres = parseFloat(
       (cdt.inversion * (cdt.interes / 100) * (cdt.duracion / 360)).toFixed(2)
     );
     const montoGanancia = parseFloat(
-      (cdt.inversion + montoIntereses).toFixed(2)
+      (cdt.inversion + montoInteres).toFixed(2)
     );
     const montoRetencion = parseFloat(
-      (montoIntereses * (cdt.retencion / 100)).toFixed(2)
+      (montoInteres * (cdt.retencion / 100)).toFixed(2)
     );
     const montoDevolucion = parseFloat(
       (montoGanancia - montoRetencion).toFixed(2)
@@ -40,7 +40,7 @@ module.exports = {
     }
 
     const calculos = {
-      montoIntereses,
+      montoInteres,
       montoGanancia,
       montoRetencion,
       montoDevolucion,
@@ -53,12 +53,12 @@ module.exports = {
     const interes = 12.25;
     const retencion = 4;
 
-    const montoIntereses = parseFloat(
+    const montoInteres = parseFloat(
       (inversion * (interes / 100) * (duracion / 360)).toFixed(2)
     );
-    const montoGanancia = parseFloat((inversion + montoIntereses).toFixed(2));
+    const montoGanancia = parseFloat((inversion + montoInteres).toFixed(2));
     const montoRetencion = parseFloat(
-      (montoIntereses * (retencion / 100)).toFixed(2)
+      (montoInteres * (retencion / 100)).toFixed(2)
     );
     const montoDevolucion = parseFloat(
       (montoGanancia - montoRetencion).toFixed(2)
@@ -74,7 +74,7 @@ module.exports = {
       fechaFin,
       interes,
       retencion,
-      montoIntereses,
+      montoInteres,
       montoGanancia,
       montoRetencion,
       montoDevolucion,

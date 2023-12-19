@@ -49,4 +49,4 @@ cdtsRouter.post(
   _cdtsController.cancelar
 );
 
-module.exports = cdtsController;
+module.exports = cdtsRouter;

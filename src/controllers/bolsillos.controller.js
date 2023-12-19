@@ -319,7 +319,7 @@ class BolsillosController {
                     id: movimiento.id,
                     tipo: "carga-bolsillo",
                     fecha: movimiento.fecha,
-                    monto: parseFloat(),
+                    monto: parseFloat(monto),
                   },
                 })
               );
