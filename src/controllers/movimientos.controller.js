@@ -158,30 +158,30 @@ class MovimientosController {
         const { entidadDestino, cuentaDestino, monto } = req.body;
 
         if (cuenta.saldo >= monto) {
-          if (entidadDestino == "quyne") {
-            const { data } = await axios.post(
-              `${process.env.URLQUYNE}/movimientos/realizar-transferencia-externa-carga`,
-              {
-                numeroTelefono: cuentaDestino,
-                entidadDestino: "F4Y",
-                cuentaDestino:
-                  cuenta.tipoIdentificacion + cuenta.numeroIdentificacion,
-                monto,
-              },
-              { headers: { Authorization: process.env.SECRETQUYNE } }
-            );
+          // if (entidadDestino == "quyne") {
+          //   const { data } = await axios.post(
+          //     `${process.env.URLQUYNE}/movimientos/realizar-transferencia-externa-carga`,
+          //     {
+          //       numeroTelefono: cuentaDestino,
+          //       entidadDestino: "F4Y",
+          //       cuentaDestino:
+          //         cuenta.tipoIdentificacion + cuenta.numeroIdentificacion,
+          //       monto,
+          //     },
+          //     { headers: { Authorization: process.env.SECRETQUYNE } }
+          //   );
 
-            if (data.type != "success") {
-              return res
-                .status(200)
-                .json(
-                  utils.errorResponse(
-                    "La cuenta especificada no corresponde con ninguna cuenta de QuyneApp.",
-                    null
-                  )
-                );
-            }
-          }
+          //   if (data.type != "success") {
+          //     return res
+          //       .status(200)
+          //       .json(
+          //         utils.errorResponse(
+          //           "La cuenta especificada no corresponde con ninguna cuenta de QuyneApp.",
+          //           null
+          //         )
+          //       );
+          //   }
+          // }
 
           const movimiento = await movimientosService.crearMovimiento(
             cuenta.id,
